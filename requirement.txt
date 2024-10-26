@@ -1,1 +1,4 @@
 polars
+pandas
+matplotlib
+seaborn
