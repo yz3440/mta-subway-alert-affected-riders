@@ -2,9 +2,12 @@
 
 Project for the [MTA Open Data Challenge 2024](https://new.mta.info/article/mta-open-data-challenge).
 
-![data-relation-and-project-screenshot](./assets/data-relations.png)
+[![platform demo](./assets/demo.gif)](demo.gif)
 
 This project provides an interactive visualization platform ([mta-subway-alerts-influence.vercel.app](https://mta-subway-alerts-influence.vercel.app)) that maps the relationship between MTA subway service disruptions and ridership patterns. By correlating service alerts with station entry data, we visualize the number of riders potentially affected by service disruptions through an interactive heatmap and station-level grid cells.
+
+[![timelapse](./assets/timelapse.gif)](demo.gif)
+[Watch the full timelapse on YouTube](https://youtu.be/lxuKAirvQeg)
 
 The analysis spans 31 months (February 2022 through August 2024), allowing users to select any date and explore:
 
@@ -21,6 +24,8 @@ The analysis spans 31 months (February 2022 through August 2024), allowing users
 > - Some riders may have been informed of the disruption before entering the station
 
 ## Datasets
+
+![data-relation-and-project-screenshot](./assets/data-relations.png)
 
 This repository contains code to process New York MTA (Metropolitan Transportation Authority) data from three main datasets:
 
