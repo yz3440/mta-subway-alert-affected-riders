@@ -1,4 +1,4 @@
-date	total_ridership	alert_count	influenced_riders
+date	total_ridership	alert_count	affected_riders
 2022-02-01	1915331	130	777753
 2022-02-02	2181677	104	705739
 2022-02-03	2182111	124	752618
