@@ -52,7 +52,7 @@ After building, you can start the production server:
 npm run start
 ```
 
-The website ([mta-subway-alerts-influence.vercel.app](https://mta-subway-alerts-influence.vercel.app)) provides:
+The website ([mta-subway-alerts-affected-rider.vercel.app](https://mta-subway-alerts-affected-rider.vercel.app)) provides:
 
 - Interactive heatmap of potentially affected ridership
 - Station-level grid cell visualization

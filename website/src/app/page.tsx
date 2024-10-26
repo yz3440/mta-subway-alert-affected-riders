@@ -78,12 +78,12 @@ export default function Home() {
     timeMax,
   });
 
-  const { alerts, totalRidershipOfTheTimePeriod, riderShipInfluenced } =
+  const { alerts, totalRidershipOfTheTimePeriod, riderShipAffected } =
     data ?? {};
 
   const DataType = useMemo<DataType[]>(() => {
-    if (!riderShipInfluenced) return [];
-    return riderShipInfluenced.map((r) => {
+    if (!riderShipAffected) return [];
+    return riderShipAffected.map((r) => {
       const uniqueAlertIds = new Array(...new Set(r.alertIds));
       return {
         position: [r.longitude, r.latitude],
@@ -93,7 +93,7 @@ export default function Home() {
         alertIds: uniqueAlertIds,
       };
     });
-  }, [riderShipInfluenced]);
+  }, [riderShipAffected]);
 
   // Apply view state constraints
   const applyViewStateConstraints = useCallback(
@@ -158,12 +158,12 @@ export default function Home() {
       return {
         selectedDay: timeMin,
         totalAlertCount: null,
-        influencedRidership: null,
+        affectedRidership: null,
       };
 
     const totalAlertCount = alerts?.length;
 
-    const influencedRidership = riderShipInfluenced!.reduce(
+    const affectedRidership = riderShipAffected!.reduce(
       (acc, r) => acc + r.ridership,
       0,
     );
@@ -171,7 +171,7 @@ export default function Home() {
     return {
       selectedDay: timeMin,
       totalAlertCount,
-      influencedRidership,
+      affectedRidership,
     };
   }, [alerts, timeMin]);
 
@@ -281,14 +281,14 @@ export default function Home() {
           <span>{formatDate(OVERALL_MAX_DATE)}</span>
         </div>
       </div>
-      <div className="convex fixed left-0 top-0 z-10 m-4 w-72 rounded-lg bg-background bg-opacity-50 p-4 text-white">
+      <div className="convex fixed left-0 top-0 z-10 m-4 w-80 rounded-lg bg-background bg-opacity-50 p-4 text-white">
         <h1
           className="font-serif text-2xl"
           style={{
             fontStretch: "condensed",
           }}
         >
-          MTA Subway Alert Influence
+          MTA Subway Alert Affected Riders
         </h1>
         <Separator className="my-2" />
         <section className="flex flex-col gap-y-0">
@@ -320,17 +320,17 @@ export default function Home() {
           </h3>
 
           <h3 className="flex items-center justify-between gap-x-1">
-            <div>Influenced Riders</div>
+            <div>Affected Riders</div>
             <span className="font-semibold">
-              {generalInfo.influencedRidership}
+              {generalInfo.affectedRidership}
             </span>
           </h3>
           <h3 className="flex items-center justify-between gap-x-1">
-            <div>Influence Ratio</div>
+            <div>Affected Ratio</div>
             <span className="font-semibold">
-              {generalInfo?.influencedRidership && totalRidershipOfTheTimePeriod
+              {generalInfo?.affectedRidership && totalRidershipOfTheTimePeriod
                 ? (
-                    (generalInfo.influencedRidership /
+                    (generalInfo.affectedRidership /
                       totalRidershipOfTheTimePeriod) *
                     100
                   ).toFixed(2) + "%"
@@ -341,12 +341,12 @@ export default function Home() {
         <Separator className={cn("my-2", RECORD_MODE && "hidden")} />
         <section className={cn(RECORD_MODE && "hidden")}>
           <p className="text-xs text-muted-foreground">
-            Riders Influenced is estimated by counting riders at stations with
+            Riders affected is estimated by counting riders at stations with
             disrupted lines within 30 minutes of any relevant alert.
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            The actual number of riders influenced is lower because not all
-            stops along a disrupted line are necessarily affected.
+            The actual number of riders affected is lower because not all stops
+            along a disrupted line are necessarily affected.
           </p>
         </section>
       </div>
@@ -419,7 +419,7 @@ export default function Home() {
             <div>{pickedClusters.availableLines.join(", ")}</div>
           </h2>
           <h2 className="flex justify-between gap-4">
-            <div>Influenced Riders</div>
+            <div>Affected Riders</div>
             <div>{pickedClusters.sumRidership}</div>
           </h2>
 

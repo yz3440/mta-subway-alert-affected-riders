@@ -34,9 +34,9 @@ const rethinkSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "MTA Subway Alert Influence",
+  title: "MTA Subway Alert Affected Riders",
   description:
-    "Visualizing how many New York City subway riders are potentially influenced by disruptions according to MTA alerts. Daily from Feb 2022 - August 2024",
+    "Visualizing how many New York City subway riders are potentially affected by disruptions according to MTA alerts. Daily from Feb 2022 - August 2024",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 

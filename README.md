@@ -1,10 +1,10 @@
-# MTA Subway Alert Influence
+# MTA Subway Alert Affected Rider
 
 Project for the [MTA Open Data Challenge 2024](https://new.mta.info/article/mta-open-data-challenge).
 
 [![platform demo](./assets/demo.gif)](demo.gif)
 
-This project provides an interactive visualization platform ([mta-subway-alerts-influence.vercel.app](https://mta-subway-alerts-influence.vercel.app)) that maps the relationship between MTA subway service disruptions and ridership patterns. By correlating service alerts with station entry data, we visualize the number of riders potentially affected by service disruptions through an interactive heatmap and station-level grid cells.
+This project provides an interactive visualization platform ([mta-subway-alerts-affected-rider.vercel.app](https://mta-subway-alerts-affected-rider.vercel.app)) that maps the relationship between MTA subway service disruptions and ridership patterns. By correlating service alerts with station entry data, we visualize the number of riders potentially affected by service disruptions through an interactive heatmap and station-level grid cells.
 
 [![timelapse](./assets/timelapse.gif)](demo.gif)
 [Watch the full timelapse on YouTube](https://youtu.be/lxuKAirvQeg)
@@ -196,7 +196,7 @@ After building, you can start the production server:
 npm run start
 ```
 
-The website ([mta-subway-alerts-influence.vercel.app](https://mta-subway-alerts-influence.vercel.app)) provides:
+The website ([mta-subway-alerts-affected-rider.vercel.app](https://mta-subway-alerts-affected-rider.vercel.app)) provides:
 
 - Interactive heatmap of potentially affected ridership
 - Station-level grid cell visualization
@@ -211,4 +211,4 @@ The [`/analysis`](./analysis/) directory contains exploratory visualizations exa
 
 While these visualizations offer insights into weekly patterns, monthly trends, and correlation between alerts and affected ridership, they use a simplified methodology that provides upper-bound estimates.
 
-The analysis counts riders entering stations with disrupted lines within 30 minutes of alerts, but could be improved by considering specific line segments affected, alternative routes, alert severity, and transfer patterns. For a more detailed view, visit the interactive visualization platform at ([mta-subway-alerts-influence.vercel.app](https://mta-subway-alerts-influence.vercel.app)), which implements some of these methodological improvements.
+The analysis counts riders entering stations with disrupted lines within 30 minutes of alerts, but could be improved by considering specific line segments affected, alternative routes, alert severity, and transfer patterns. For a more detailed view, visit the interactive visualization platform at ([mta-subway-alerts-affected-rider.vercel.app](https://mta-subway-alerts-affected-rider.vercel.app)), which implements some of these methodological improvements.

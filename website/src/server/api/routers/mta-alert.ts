@@ -121,7 +121,7 @@ export const mtaAlertRouter = createTRPCRouter({
       }
 
       // now we can aggregate the ridership data
-      const ridershipInfluenced: RiderShipInfluenced[] = ridership
+      const ridershipAffected: RiderShipAffected[] = ridership
         .map((r) => {
           const parsedTimestamp = new Date(r.timestamp);
           parsedTimestamp.setMinutes(0, 0, 0);
@@ -154,10 +154,10 @@ export const mtaAlertRouter = createTRPCRouter({
             complexId: r.complexId,
             lines: r.lines ?? [],
             alertIds: validAlerts.map((a) => a.alertId),
-            isInfluenced: validAlerts.length > 0,
+            isAffected: validAlerts.length > 0,
           };
         })
-        .filter((r) => r.isInfluenced);
+        .filter((r) => r.isAffected);
 
       // Group the results by alert
       const alerts: Record<number, Alert> = {};
@@ -205,13 +205,13 @@ export const mtaAlertRouter = createTRPCRouter({
 
       return {
         alerts: Object.values(alerts),
-        riderShipInfluenced: ridershipInfluenced,
+        riderShipAffected: ridershipAffected,
         totalRidershipOfTheTimePeriod,
       };
     }),
 });
 
-interface RiderShipInfluenced {
+interface RiderShipAffected {
   ridership: number;
   timestamp: string;
   latitude: number;
@@ -219,7 +219,7 @@ interface RiderShipInfluenced {
   complexId: number;
   lines: string[];
   alertIds: number[];
-  isInfluenced: boolean;
+  isAffected: boolean;
 }
 
 interface AlertStop {
