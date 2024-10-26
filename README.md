@@ -16,7 +16,7 @@ The analysis spans 31 months (February 2022 through August 2024), allowing users
 - Interactive timeline views for each station showing relevant service alerts throughout the day
 - Hover functionality revealing detailed station and alert information
 
-> **Important Disclaimer**: My estimation provides an upper bound of affected riders. The actual number of riders influenced is likely significantly lower because:
+> **Important Disclaimer**: My estimation provides an upper bound of affected riders. The actual number of riders affected is likely significantly lower because:
 >
 > - Not all stops along a disrupted line are necessarily affected by the reported incident
 > - Some riders may have alternative routes available
