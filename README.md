@@ -199,3 +199,11 @@ The website ([mta-subway-alerts-influence.vercel.app](https://mta-subway-alerts-
 - Date selection for historical analysis
 
 Note: Ensure your database is accessible from your deployment environment and the `DATABASE_URL` is properly configured in your production environment.
+
+## Preliminary Data Analysis
+
+The [`/analysis`](./analysis/) directory contains exploratory visualizations examining the relationship between MTA service alerts and ridership patterns from February 2022 through August 2024.
+
+While these visualizations offer insights into weekly patterns, monthly trends, and correlation between alerts and affected ridership, they use a simplified methodology that provides upper-bound estimates.
+
+The analysis counts riders entering stations with disrupted lines within 30 minutes of alerts, but could be improved by considering specific line segments affected, alternative routes, alert severity, and transfer patterns. For a more detailed view, visit the interactive visualization platform at ([mta-subway-alerts-influence.vercel.app](https://mta-subway-alerts-influence.vercel.app)), which implements some of these methodological improvements.

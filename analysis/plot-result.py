@@ -7,7 +7,7 @@ import matplotlib.dates as mdates
 # Daily ridership with alerts
 ########################################################
 # Read the TSV file
-df = pd.read_csv("./results/mta_ridership_with_alerts_daily.tsv", sep="\t", parse_dates=['date'])
+df = pd.read_csv("./analysis/mta_ridership_with_alerts_daily.tsv", sep="\t", parse_dates=['date'])
 plt.figure(figsize=(15, 6))
 
 # Convert 'influenced_riders' and 'total_ridership' columns to numeric
@@ -32,7 +32,7 @@ plt.xticks(rotation=45)
 
 # save to file
 plot_name = "percentage_impact_of_alerts"
-plt.savefig(f'./results/{plot_name}.png')
+plt.savefig(f'./analysis/{plot_name}.png')
 
 ########################################################
 # WEEKLY DISTRIBUTION OF INFLUENCED RIDERS
@@ -49,7 +49,7 @@ plt.ylabel('Number of Influenced Riders')
 
 # save to file
 plot_name = "influenced_riders_by_day_of_week"
-plt.savefig(f'./results/{plot_name}.png')
+plt.savefig(f'./analysis/{plot_name}.png')
 
 ########################################################
 # MONTHLY DISTRIBUTION OF INFLUENCED RIDERS
@@ -75,7 +75,7 @@ plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
 plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
 
 plot_name = "monthly_average_percentage_influenced_riders"
-plt.savefig(f'./results/{plot_name}.png')
+plt.savefig(f'./analysis/{plot_name}.png')
 
 
 ########################################################
@@ -91,4 +91,4 @@ plt.ylabel('Number of Influenced Riders')
 
 # save to file
 plot_name = "alert_impact"
-plt.savefig(f'./results/{plot_name}.png')
+plt.savefig(f'./analysis/{plot_name}.png')
