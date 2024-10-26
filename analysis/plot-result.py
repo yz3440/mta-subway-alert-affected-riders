@@ -92,3 +92,23 @@ plt.ylabel('Number of Influenced Riders')
 # save to file
 plot_name = "alert_impact"
 plt.savefig(f'./analysis/{plot_name}.png')
+
+
+########################################################
+# JUST TOTAL RIDERS MONTHLY TREND
+########################################################
+monthly_ridership = df.groupby(df['date'].dt.to_period('M'))['total_ridership'].mean().reset_index()
+monthly_ridership['date'] = monthly_ridership['date'].dt.to_timestamp()
+
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=monthly_ridership, x='date', y='total_ridership', marker='o')
+plt.title('Monthly Average Total Ridership Trend')
+plt.xlabel('Month')
+plt.ylabel('Average Total Ridership')
+plt.xticks(rotation=45)
+plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+plt.tight_layout()
+
+plot_name = "monthly_total_riders_trend"
+plt.savefig(f'./analysis/{plot_name}.png')
