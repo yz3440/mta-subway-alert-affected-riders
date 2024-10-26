@@ -444,10 +444,10 @@ export default function Home() {
                 </div>
                 <div>{alert.statusLabel}</div>
                 {alert.header && alert.header.length > 0 && (
-                  <div>{alert.header}</div>
+                  <div className="text-sm">{alert.header}</div>
                 )}
                 {alert.description && alert.description.length > 0 && (
-                  <div>{alert.description}</div>
+                  <div className="text-sm">{alert.description}</div>
                 )}
               </div>
             ))}
