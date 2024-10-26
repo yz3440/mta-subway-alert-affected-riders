@@ -1,4 +1,4 @@
-# MTA Subway Alert Affected Rider
+# MTA Subway Alert Affected Riders
 
 Project for the [MTA Open Data Challenge 2024](https://new.mta.info/article/mta-open-data-challenge).
 
