@@ -2,6 +2,8 @@
 
 Project for the [MTA Data Challenge](https://new.mta.info/article/mta-open-data-challenge).
 
+![data-relation-and-project-screenshot](./assets/data-relations.png)
+
 This project provides an interactive visualization platform ([mta-subway-alerts-influence.vercel.app](https://mta-subway-alerts-influence.vercel.app)) that maps the relationship between MTA subway service disruptions and ridership patterns. By correlating service alerts with station entry data, we visualize the number of riders potentially affected by service disruptions through an interactive heatmap and station-level grid cells.
 
 The analysis spans 31 months (February 2022 through August 2024), allowing users to select any date and explore:
@@ -150,7 +152,7 @@ cd website
 2. Install dependencies:
 
 ```bash
-npm install --force
+npm install
 ```
 
 3. Configure database connection:

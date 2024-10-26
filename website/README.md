@@ -1,4 +1,4 @@
-## Deploy the Website
+# Deploy the Website
 
 The visualization platform is built with NextJS, which provides both the frontend interface and backend API endpoints to query the database.
 
@@ -8,12 +8,12 @@ The visualization platform is built with NextJS, which provides both the fronten
 > - Calculating temporal overlaps
 > - Aggregating affected passenger counts
 
-### Setup Development Environment
+## Setup Development Environment
 
 1. Install dependencies:
 
 ```bash
-npm install --force
+npm install
 ```
 
 2. Configure database connection:
@@ -24,7 +24,7 @@ npm install --force
 DATABASE_URL="postgresql://username:password@host:port/database"
 ```
 
-### Development
+## Development
 
 Run the development server:
 
@@ -38,7 +38,7 @@ The site will be available at `http://localhost:3000`. The development server in
 - API route testing
 - Development error messages
 
-### Production Deployment
+## Production Deployment
 
 Build the production version:
 
