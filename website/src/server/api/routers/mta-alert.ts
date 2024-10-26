@@ -153,7 +153,7 @@ export const mtaAlertRouter = createTRPCRouter({
             longitude: parseFloat(r.longitude ?? "0"),
             complexId: r.complexId,
             lines: r.lines ?? [],
-            alertsIds: validAlerts.map((a) => a.alertId),
+            alertIds: validAlerts.map((a) => a.alertId),
             isInfluenced: validAlerts.length > 0,
           };
         })
@@ -218,7 +218,7 @@ interface RiderShipInfluenced {
   longitude: number;
   complexId: number;
   lines: string[];
-  alertsIds: number[];
+  alertIds: number[];
   isInfluenced: boolean;
 }
 

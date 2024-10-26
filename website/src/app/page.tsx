@@ -1,18 +1,25 @@
 "use client";
 import { api } from "@/trpc/react";
 import Link from "next/link";
-import { cn, clamp, differenceInDays, addDays, formatDate } from "@/lib/utils";
+import {
+  cn,
+  clamp,
+  differenceInDays,
+  addDays,
+  formatDate,
+  formatTime,
+} from "@/lib/utils";
 import { useCallback, useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { MTA_COMPLEX_ID_MAP } from "@/lib/mta-complex";
 import { useMapViewStateParams } from "@/hooks/params-parsers/use-map-view-state-params";
 // DECK.GL
-import { HeatmapLayer } from "@deck.gl/aggregation-layers";
+import { HeatmapLayer, GridLayer } from "@deck.gl/aggregation-layers";
 import {
   type LayersList,
   type MapViewState,
   type PickingInfo,
 } from "@deck.gl/core";
-import { GridCellLayer } from "@deck.gl/layers";
 
 import DeckGL from "@deck.gl/react";
 
@@ -24,16 +31,20 @@ import { cartoStyles, NYC_BOUNDS, DEFAULT_INITIAL_VIEW_STATE } from "@/lib/map";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 
-interface TransformedData {
+interface DataType {
   position: [number, number];
   ridership: number;
   lines: string[];
   complexId: number;
-  alert: {
-    alertId: number;
-  }[];
+  alertIds: number[];
 }
 
+interface AggregatedDataObject {
+  points: {
+    source: DataType;
+    index: number;
+  }[];
+}
 const OVERALL_MIN_DATE = new Date("2022-02-01T00:00:00Z");
 const OVERALL_MAX_DATE = new Date("2024-08-30T00:00:00Z");
 
@@ -70,16 +81,18 @@ export default function Home() {
   const { alerts, totalRidershipOfTheTimePeriod, riderShipInfluenced } =
     data ?? {};
 
-  const transformedData = useMemo<TransformedData[]>(() => {
+  const DataType = useMemo<DataType[]>(() => {
     if (!riderShipInfluenced) return [];
-
-    return riderShipInfluenced.map((r) => ({
-      position: [r.longitude, r.latitude],
-      ridership: r.ridership,
-      complexId: r.complexId,
-      lines: r.lines,
-      alert: r.alertsIds.map((alertId) => ({ alertId })),
-    }));
+    return riderShipInfluenced.map((r) => {
+      const uniqueAlertIds = new Array(...new Set(r.alertIds));
+      return {
+        position: [r.longitude, r.latitude],
+        ridership: r.ridership,
+        complexId: r.complexId,
+        lines: r.lines,
+        alertIds: uniqueAlertIds,
+      };
+    });
   }, [riderShipInfluenced]);
 
   // Apply view state constraints
@@ -100,21 +113,31 @@ export default function Home() {
     [],
   );
 
-  const gridLayer = new GridCellLayer<TransformedData>({
+  const gridLayer = new GridLayer<DataType>({
     id: "grid",
-    data: transformedData,
+    data: DataType,
     getPosition: (d) => new Float32Array(d.position),
-    cellSize: 20,
-    getElevation: (d) => d.ridership,
-    getFillColor: (d) => [255, 255, 255, 255],
+    cellSize: 30,
+    elevationScale: 8,
+    getElevationWeight: (d) => d.ridership * 10,
+    colorRange: [
+      [255, 255, 255, 240],
+      [255, 255, 255, 240],
+      [255, 255, 255, 240],
+      [255, 255, 255, 240],
+    ],
     extruded: true,
-    elevationScale: 1,
+    gpuAggregation: true,
+    pickable: true,
+    onHover: (info) => {
+      setHoverInfo(info);
+    },
   });
 
-  const heatmapLayer = new HeatmapLayer<TransformedData>({
+  const heatmapLayer = new HeatmapLayer<DataType>({
     id: "heatmap",
     radiusPixels: 40,
-    data: transformedData,
+    data: DataType,
     getPosition: (d) => new Float32Array(d.position),
     getWeight: (d) => d.ridership,
     colorRange: [
@@ -185,6 +208,43 @@ export default function Home() {
   const handlePlayButtonClick = () => {
     setIsPlaying(true);
   };
+
+  const [hoverInfo, setHoverInfo] =
+    useState<PickingInfo<DataType | AggregatedDataObject>>();
+
+  const pickedClusters = useMemo(() => {
+    if (!hoverInfo) return null;
+    const pickedInfo = pickingInfoToAlertClusters(hoverInfo);
+    if (!pickedInfo || pickedInfo.length === 0) return null;
+    const sumRidership = pickedInfo.reduce((acc, p) => acc + p.ridership, 0);
+    const allAlertIds = pickedInfo.flatMap((p) => p.alertIds);
+    const availableLines = [...new Set(pickedInfo.flatMap((p) => p.lines))];
+    // all complexIds should be the same
+    const complexIds = pickedInfo.map((p) => p.complexId);
+    const complexId = complexIds[0]!;
+    const complexInfo = MTA_COMPLEX_ID_MAP[complexId]!;
+    const aggregatedAlerts = alerts
+      ?.filter((a) => allAlertIds.includes(a.alertId))
+      .map((a) => ({
+        ...a,
+        timestamp: new Date(a.timestamp),
+      }))
+      .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+
+    console.log({
+      complexId,
+      sumRidership,
+      availableLines,
+      aggregatedAlerts,
+      complexInfo,
+    });
+    return {
+      sumRidership,
+      availableLines,
+      aggregatedAlerts: aggregatedAlerts ?? [],
+      complexInfo,
+    };
+  }, [hoverInfo]);
 
   const layers: LayersList | undefined = [gridLayer, heatmapLayer];
   return (
@@ -339,6 +399,80 @@ export default function Home() {
           <Map mapStyle={cartoStyles.darkMatterNoLabels}></Map>
         </DeckGL>
       </div>
+      {/* TOOLTIP */}
+      {hoverInfo?.object && pickedClusters && (
+        <div
+          className="convex min-w-xs absolute z-10 max-w-sm rounded-md bg-background p-2 px-3 shadow-md"
+          style={{ left: hoverInfo.x, top: hoverInfo.y }}
+        >
+          <h2
+            className="flex justify-between font-serif text-2xl"
+            style={{
+              fontStretch: "condensed",
+            }}
+          >
+            <div>{pickedClusters.complexInfo.stop_name}</div>
+            {/* <div>{pickedClusters.complexInfo.borough}</div> */}
+          </h2>
+          <h2 className="flex justify-between gap-4">
+            <div>Lines</div>
+            <div>{pickedClusters.availableLines.join(", ")}</div>
+          </h2>
+          <h2 className="flex justify-between gap-4">
+            <div>Influenced Riders</div>
+            <div>{pickedClusters.sumRidership}</div>
+          </h2>
+
+          <Separator className="my-2" />
+          <h2
+            className="flex justify-between font-serif text-xl"
+            style={{
+              fontStretch: "condensed",
+            }}
+          >
+            <div>Alerts</div>
+            <div>({pickedClusters.aggregatedAlerts.length})</div>
+          </h2>
+          <p className="concave flex max-h-48 flex-col gap-y-1 overflow-y-auto rounded-md bg-foreground p-2 text-background">
+            {pickedClusters.aggregatedAlerts.map((alert) => (
+              <div key={alert.alertId} className="flex flex-col">
+                <div className="flex justify-between gap-x-2">
+                  <span className="font-semibold">#{alert.alertId}</span>
+                  <span className="text-muted-foreground">
+                    {formatTime(alert.timestamp)}
+                  </span>
+                </div>
+                <div>{alert.statusLabel}</div>
+                {alert.header && alert.header.length > 0 && (
+                  <div>{alert.header}</div>
+                )}
+                {alert.description && alert.description.length > 0 && (
+                  <div>{alert.description}</div>
+                )}
+              </div>
+            ))}
+          </p>
+        </div>
+      )}
     </main>
   );
+}
+/*
+ * Convert a PickingInfo object to an array of Alert Cluster
+ * Picking info for AggregatedLayer is an array of points, each with a source property.
+ */
+function pickingInfoToAlertClusters(
+  pickingInfo: PickingInfo<DataType | AggregatedDataObject> | undefined,
+): DataType[] {
+  if (!pickingInfo?.object) {
+    return [];
+  }
+  const { object: pickedObject } = pickingInfo;
+  if ("points" in pickedObject) {
+    return pickedObject.points.map(
+      (point: { source: DataType }) => point.source,
+    );
+  } else {
+    return [pickedObject];
+  }
 }

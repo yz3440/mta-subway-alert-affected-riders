@@ -55,3 +55,11 @@ export function formatDate(date: Date): string {
     timeZone: "UTC",
   });
 }
+
+export function formatTime(date: Date): string {
+  const utcDate = new Date(date.toUTCString());
+  return utcDate.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
