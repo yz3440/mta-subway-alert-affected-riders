@@ -1,6 +1,6 @@
 # MTA Subway Alert Influence
 
-Project for the [MTA Data Challenge](https://new.mta.info/article/mta-open-data-challenge).
+Project for the [MTA Open Data Challenge 2024](https://new.mta.info/article/mta-open-data-challenge).
 
 ![data-relation-and-project-screenshot](./assets/data-relations.png)
 
