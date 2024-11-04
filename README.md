@@ -4,7 +4,7 @@ Project for the [MTA Open Data Challenge 2024](https://new.mta.info/article/mta-
 
 [![platform demo](./assets/demo.gif)](demo.gif)
 
-This project provides an interactive visualization platform ([mta-subway-alerts-affected-riders.vercel.app](https://mta-subway-alerts-affected-riders.vercel.app)) that maps the relationship between MTA subway service disruptions and ridership patterns. By correlating service alerts with station entry data, we visualize the number of riders potentially affected by service disruptions through an interactive heatmap and station-level grid cells.
+This project provides an interactive visualization platform ([mta-subway-alert-affected-riders.vercel.app](https://mta-subway-alert-affected-riders.vercel.app)) that maps the relationship between MTA subway service disruptions and ridership patterns. By correlating service alerts with station entry data, we visualize the number of riders potentially affected by service disruptions through an interactive heatmap and station-level grid cells.
 
 [![timelapse](./assets/timelapse.gif)](demo.gif)
 [Watch the full timelapse on YouTube](https://youtu.be/lxuKAirvQeg)
