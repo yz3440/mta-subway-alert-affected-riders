@@ -281,6 +281,8 @@ export default function Home() {
           <span>{formatDate(OVERALL_MAX_DATE)}</span>
         </div>
       </div>
+
+      {/* INFO - TOP LEFT */}
       <div className="convex fixed left-0 top-0 z-10 m-4 w-80 rounded-lg bg-background bg-opacity-50 p-4 text-white">
         <h1
           className="font-serif text-2xl"
@@ -349,6 +351,35 @@ export default function Home() {
             along a disrupted line are necessarily affected.
           </p>
         </section>
+      </div>
+
+      {/* ABOUT - TOP RIGHT */}
+      <div className="fixed right-0 top-0 z-10 m-4 w-80 rounded-lg bg-opacity-50 p-4 text-right text-white">
+        <h2
+          className=""
+          style={{
+            fontStretch: "condensed",
+          }}
+        >
+          Made by{" "}
+          <a
+            className="underline"
+            href="https://yufengzhao.com"
+            target="_blank"
+          >
+            Yufeng Zhao
+          </a>
+        </h2>
+        <h2>
+          Open source on{" "}
+          <a
+            className="underline"
+            href="https://github.com/yz3440/mta-subway-alert-affected-riders"
+            target="_blank"
+          >
+            Github
+          </a>
+        </h2>
       </div>
 
       <div
